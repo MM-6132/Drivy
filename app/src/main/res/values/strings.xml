@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Drivy</string>
+    <string name="turn_on">Turn on</string>
+    <string name="turn_off">Turn off</string>
+    <string name="discoverable">Discoverable</string>
+    <string name="get_paired_devices">Get paired devices</string>
+</resources>
