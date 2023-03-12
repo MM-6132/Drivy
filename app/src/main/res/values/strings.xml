@@ -4,4 +4,17 @@
     <string name="turn_off">Turn off</string>
     <string name="discoverable">Discoverable</string>
     <string name="get_paired_devices">Get paired devices</string>
+    <string name="title">Title</string>
+    <string name="no_devices_found">No devices found</string>
+    <string name="devices">Devices</string>
+    <string name="todo">TODO</string>
+    <string name="pair_to_new_device">pair to new device</string>
+    <string name="controller">Controller</string>
+    <string name="back">back</string>
+    <string name="connect_to_bluetooth">Connect to bluetooth</string>
+    <string name="no_connection">No connection</string>
+    <string name="movement_info">Movement info</string>
+    <string name="_4_directions">4 Directions</string>
+    <string name="_8_directions">8 Directions</string>
+    <string name="speed_controller">Speed controller</string>
 </resources>

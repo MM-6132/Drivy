@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Controller">
+
+    <LinearLayout
+        android:id="@+id/movement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="24dp"
+            android:text="@string/controller"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/deviceName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="24dp"
+            android:text="@string/no_connection"
+            android:textSize="14sp" />
+
+
+        <!-- Bluetooth -->
+        <ImageButton
+            android:id="@+id/bluetooth"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:contentDescription="@string/connect_to_bluetooth"
+            app:tint="@color/colorPrimary"
+            app:srcCompat="@drawable/baseline_bluetooth_24" />
+
+
+    </LinearLayout>
+
+    <!-- Movement Section -->
+    <LinearLayout
+        android:id="@+id/movementLayout"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="55dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="vertical"
+        android:padding="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    <!-- Directions section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:orientation="horizontal">
+
+        <!-- Directions info button -->
+        <ImageButton
+            android:id="@+id/movementInfo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:contentDescription="@string/movement_info"
+            android:src="@drawable/info" />
+
+        <!-- Toggle directions mode button -->
+        <ToggleButton
+            android:id="@+id/directionsToggle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/btn_toggle"
+            android:textColor="@color/white"
+            android:textOff="@string/_4_directions"
+            android:textOn="@string/_8_directions" />
+    </LinearLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <io.github.controlwear.virtual.joystick.android.JoystickView
+                android:id="@+id/movementController"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/joystick"
+                app:JV_backgroundSizeRatio="70%"
+                app:JV_borderColor="@null"
+                app:JV_buttonColor="#004080"
+                app:JV_buttonSizeRatio="30%"
+                app:JV_fixedCenter="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <SeekBar
+                android:id="@+id/speedController"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:contentDescription="@string/speed_controller"
+                android:max="100"
+                android:progress="50"
+                android:progressBackgroundTint="@color/colorPrimary"
+                android:rotation="-90"
+                android:scaleX="2"
+                android:scaleY="2"
+                android:thumbTint="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:thumbColor="@color/colorPrimary"
+                app:trackColor="@color/colorPrimary" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
