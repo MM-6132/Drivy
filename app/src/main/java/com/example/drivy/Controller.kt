@@ -3,22 +3,34 @@ package com.example.drivy
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.hardware.Camera
 import android.os.Bundle
+import android.util.Log
+import android.view.SurfaceHolder
+import android.view.SurfaceView
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import io.github.controlwear.virtual.joystick.android.JoystickView
+import java.io.IOException
 import com.example.drivy.Bluetooth.Companion as b
 import com.example.drivy.Controls.Companion as c
 
 class Controller : AppCompatActivity() {
-    var readingThread: Thread? = null
-    var read = false
+    private lateinit var camera: Camera
+    private lateinit var surfaceHolder: SurfaceHolder
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.controller)
         c.hideSystemBars(window)
+        //------------------------------- Camera -------------------------------//
+        val surfaceView = findViewById<SurfaceView>(R.id.camera_preview)
+
+        surfaceHolder = surfaceView.holder
+        surfaceHolder.addCallback(surfaceHolderCallback)
+        //-------------------------------------------------------------------------------------//
+
         if(b.connectedDevice != null) findViewById<TextView>(R.id.deviceName).text = b.connectedDevice!!.name
         else findViewById<TextView>(R.id.deviceName).text = "No connection"
 
@@ -43,8 +55,7 @@ class Controller : AppCompatActivity() {
         movementInfoButton.setOnClickListener {
             val msgHtml = "Moving North East will send :<br>" +
                     "<font color = 'blue'>4 Directions : </font>2 commands : '${c.front}' -> '${c.right}'<br>" +
-                    "<font color = 'blue'>8 Directions : </font>1 command  : '${c.front_right}'<br>" +
-                    "<font color = 'red'>Note : </font> 8 Directions is recommended when using Omni wheels"
+                    "<font color = 'blue'>8 Directions : </font>1 command  : '${c.front_right}'<br>"
             val msg = HtmlCompat.fromHtml(msgHtml, HtmlCompat.FROM_HTML_MODE_LEGACY)
             Controls.dialog(this, msg)
         }
@@ -141,7 +152,28 @@ class Controller : AppCompatActivity() {
     }
     private fun sendCmd(cmd:Char) = sendCmd(cmd.toString())
 
+    private val surfaceHolderCallback = object : SurfaceHolder.Callback {
 
+        override fun surfaceCreated(holder: SurfaceHolder) {
+            camera = Camera.open()
+
+            try {
+                camera.setPreviewDisplay(surfaceHolder)
+                camera.startPreview()
+            } catch (e: IOException) {
+                Log.d("CameraPreviewActivity", "Error setting camera preview: ${e.message}")
+            }
+        }
+
+        override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
+            // Empty, but required
+        }
+
+        override fun surfaceDestroyed(holder: SurfaceHolder) {
+            camera.stopPreview()
+            camera.release()
+        }
+    }
 
 
 }

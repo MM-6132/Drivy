@@ -23,23 +23,7 @@ class Controls {
         var back_right = 'x'
         var back_left = 'w'
         var stop = 'b'
-        var rotate_clockwise = 'r'
-        var rotate_anticlockwise = 't'
-        var fire = 'f'
-        var open_arm = 'o'
-        var close_arm = 'c'
         var speed = 'm'
-        var arm_vertical_movement = 'v'
-        var scan_on = 'u'
-        var scan_off = 'p'
-        var s1 = "Front"
-        var s2 = "Right"
-        var s3 = "Left"
-        var s4 = "Back"
-        var s1value = 0
-        var s2value = 0
-        var s3value = 0
-        var s4value = 0
 
         fun hideSystemBars(window: Window) {
             val windowInsetsController = ViewCompat.getWindowInsetsController(window.decorView) ?: return
@@ -47,15 +31,7 @@ class Controls {
             windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
         }
 
-        fun dialog(activity: AppCompatActivity, msg:String){
-            val builder = activity.let { AlertDialog.Builder(it) }
-            builder.apply {
-                setTitle("Info")
-                setMessage(msg)
-                setCancelable(true)
-            }
-            builder.create().show()
-        }
+
 
         fun dialog(activity: AppCompatActivity, msg:Spanned){
             val builder = activity.let { AlertDialog.Builder(it) }

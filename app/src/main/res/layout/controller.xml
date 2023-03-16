@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".Controller">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:rotation="0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <SurfaceView
+            android:id="@+id/camera_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
     <LinearLayout
         android:id="@+id/movement"
         android:layout_width="match_parent"
@@ -62,6 +76,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
     <!-- Directions section -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -90,10 +105,12 @@
             android:textColor="@color/white"
             android:textOff="@string/_4_directions"
             android:textOn="@string/_8_directions" />
+
     </LinearLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
 
             <io.github.controlwear.virtual.joystick.android.JoystickView
                 android:id="@+id/movementController"
