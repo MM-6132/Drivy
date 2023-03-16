@@ -92,16 +92,10 @@ class Bluetooth : AppCompatActivity() {
         val enableBluetoothButton = findViewById<Button>(R.id.turnOnBtn)
         enableBluetoothButton.setOnClickListener {
             if(!bAdapter.isEnabled){
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    requestMultiplePermissions.launch(arrayOf(
-                        Manifest.permission.BLUETOOTH_SCAN,
-                        Manifest.permission.BLUETOOTH_CONNECT
-                    ))
-                }
-                else{
-                    val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                    requestBluetoothPermission.launch(enableBtIntent)
-                }
+                requestMultiplePermissions.launch(arrayOf(
+                    Manifest.permission.BLUETOOTH_SCAN,
+                    Manifest.permission.BLUETOOTH_CONNECT
+                ))
             }else Toast.makeText(this,"Bluetooth is enabled", Toast.LENGTH_SHORT).show()
         }
         //-------------------------------------------------------------------------------------//
