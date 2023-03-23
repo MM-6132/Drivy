@@ -14,16 +14,16 @@ import java.lang.IllegalArgumentException
 
 class Controls {
     companion object{
-        var front = 'z'
-        var back = 's'
-        var left = 'q'
-        var right = 'd'
+        var front = 'F'
+        var back = 'B'
+        var left = 'L'
+        var right = 'R'
         var front_right = 'e'
         var front_left = 'a'
         var back_right = 'x'
         var back_left = 'w'
-        var stop = 'b'
-        var speed = 'm'
+        var stop = 'A'
+        var speed = 'M'
 
         fun hideSystemBars(window: Window) {
             val windowInsetsController = ViewCompat.getWindowInsetsController(window.decorView) ?: return

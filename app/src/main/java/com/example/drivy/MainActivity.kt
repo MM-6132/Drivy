@@ -21,8 +21,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val permission = Manifest.permission.BLUETOOTH_CONNECT
-        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(permission), 13456432154.toInt())
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.BLUETOOTH_CONNECT), 13456432155.toInt())
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(permission, Manifest.permission.BLUETOOTH_SCAN), 13456432154.toInt())
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(permission, Manifest.permission.CAMERA), 13456432156.toInt())
         }
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         val transaction = supportFragmentManager.beginTransaction()

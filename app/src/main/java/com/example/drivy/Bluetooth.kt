@@ -22,13 +22,13 @@ import java.io.OutputStream
 import java.util.*
 
 class Bluetooth : AppCompatActivity() {
-    private val devicesList:ArrayList<BluetoothDevice> = ArrayList()
-    private lateinit var devicesListView:ListView
+    private val devicesList: ArrayList<BluetoothDevice> = ArrayList()
+    private lateinit var devicesListView: ListView
     private lateinit var arrayAdapter: ArrayAdapter<String>
     private val uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
 
 
-    companion object{
+    companion object {
         lateinit var bAdapter: BluetoothAdapter
         lateinit var bSocket: BluetoothSocket
         lateinit var bOutputStream: OutputStream
@@ -38,7 +38,7 @@ class Bluetooth : AppCompatActivity() {
         var reconnecting = false
 
         @SuppressLint("MissingPermission")
-        fun reconnect(device:BluetoothDevice, trials:Int = 1){
+        fun reconnect(device: BluetoothDevice, trials: Int = 1) {
             val uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
             val connectionThread = Thread {
                 try {
@@ -50,7 +50,7 @@ class Bluetooth : AppCompatActivity() {
                     bOutputStream = bSocket.outputStream
                     bInputStream = bSocket.inputStream
                 } catch (e: Exception) {
-                    if(trials < 4) reconnect(device, trials + 1)
+                    if (trials < 4) reconnect(device, trials + 1)
                 } finally {
                     reconnecting = false
                 }
@@ -74,13 +74,12 @@ class Bluetooth : AppCompatActivity() {
         //-------------------------------------------------------------------------------------//
 
 
-
         //------------------------------ Bluetooth initialization -----------------------------//
         val bluetoothManager: BluetoothManager = getSystemService(BluetoothManager::class.java)
         bAdapter = bluetoothManager.adapter
-        if(bAdapter.isEnabled){
+        if (bAdapter.isEnabled) {
             devicesList.clear()
-            for(device in bAdapter.bondedDevices){
+            for (device in bAdapter.bondedDevices) {
                 devicesList.add(device)
             }
             updateDevicesList()
@@ -91,26 +90,32 @@ class Bluetooth : AppCompatActivity() {
         //------------------------------- Enable bluetooth button -----------------------------//
         val enableBluetoothButton = findViewById<Button>(R.id.turnOnBtn)
         enableBluetoothButton.setOnClickListener {
-            if(!bAdapter.isEnabled){
-                requestMultiplePermissions.launch(arrayOf(
-                    Manifest.permission.BLUETOOTH_SCAN,
-                    Manifest.permission.BLUETOOTH_CONNECT
-                ))
-            }else Toast.makeText(this,"Bluetooth is enabled", Toast.LENGTH_SHORT).show()
+            if (!bAdapter.isEnabled) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    requestMultiplePermissions.launch(
+                        arrayOf(
+                            Manifest.permission.BLUETOOTH_SCAN,
+                            Manifest.permission.BLUETOOTH_CONNECT
+                        )
+                    )
+                } else {
+                    val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                    requestBluetoothPermission.launch(enableBtIntent)
+                }
+            } else Toast.makeText(this, "Bluetooth is enabled", Toast.LENGTH_SHORT).show()
         }
         //-------------------------------------------------------------------------------------//
-
 
         //----------------------------- Get paired devices ----------------------------//
         val getPairedDevicesButton = findViewById<Button>(R.id.pairedBtn)
         getPairedDevicesButton.setOnClickListener {
-            if(bAdapter.isEnabled){
+            if (bAdapter.isEnabled) {
                 devicesList.clear()
-                for(device in bAdapter.bondedDevices){
+                for (device in bAdapter.bondedDevices) {
                     devicesList.add(device)
                 }
                 updateDevicesList()
-            }else{
+            } else {
                 Toast.makeText(this, "Turn on bluetooth first", Toast.LENGTH_SHORT).show()
             }
         }
@@ -125,22 +130,31 @@ class Bluetooth : AppCompatActivity() {
         }
         //-------------------------------------------------------------------------------------//
 
+        //--------------------------------- Controller --------------------------------//
+
+        findViewById<Button>(R.id.controllerBtn).setOnClickListener {
+            val intent = Intent(this, Controller::class.java)
+            startActivity(intent)
+            finish()
+        }
+        //-------------------------------------------------------------------------------------//
+
         //------------------------------------- Connection ------------------------------------//
-        devicesListView.setOnItemClickListener{ _, child, position, _ ->
+        devicesListView.setOnItemClickListener { _, child, position, _ ->
             val device = devicesList[position]
             val deviceInView = child as TextView
             var connecting = true
 
             val toast = Toast.makeText(this, "Device is not available", Toast.LENGTH_SHORT)
 
-            val animationThread = Thread{
+            val animationThread = Thread {
                 val name = device.name
-                while (connecting){
-                    for(i in 1 .. 3){
+                while (connecting) {
+                    for (i in 1..3) {
                         try {
                             deviceInView.text = "$name (Connecting${".".repeat(i)})"
                             Thread.sleep(250)
-                        }catch (e:InterruptedException){
+                        } catch (e: InterruptedException) {
                             break
                         }
                     }
@@ -149,12 +163,12 @@ class Bluetooth : AppCompatActivity() {
 
             val connectionThread = Thread {
                 try {
-                    if(connectedDevice != null){
+                    if (connectedDevice != null) {
                         reconnect(connectedDevice!!)
                         connecting = false
                         animationThread.interrupt()
                         deviceInView.text = "${device.name} (Connected)"
-                    }else{
+                    } else {
                         bAdapter.cancelDiscovery()
                         bSocket = device.createRfcommSocketToServiceRecord(uuid)
                         bSocket.connect()
@@ -184,22 +198,24 @@ class Bluetooth : AppCompatActivity() {
 
     }
 
-    private var requestBluetoothPermission = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { }
-    private val requestMultiplePermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {}
+    private var requestBluetoothPermission =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { }
+    private val requestMultiplePermissions =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {}
 
     @SuppressLint("MissingPermission")
-    private fun updateDevicesList(){
+    private fun updateDevicesList() {
         val empty = findViewById<TextView>(R.id.empty)
-        if(devicesList.isEmpty())  {
+        if (devicesList.isEmpty()) {
             empty.visibility = View.VISIBLE
-            arrayAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1, arrayListOf())
+            arrayAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayListOf())
             devicesListView.adapter = arrayAdapter
             arrayAdapter.notifyDataSetChanged()
-        }
-        else{
+        } else {
             empty.visibility = View.INVISIBLE
             val stringListOfDevices: List<String> = devicesList.map { it.name }
-            arrayAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1, stringListOfDevices)
+            arrayAdapter =
+                ArrayAdapter(this, android.R.layout.simple_list_item_1, stringListOfDevices)
             devicesListView.adapter = arrayAdapter
             arrayAdapter.notifyDataSetChanged()
         }

@@ -45,6 +45,13 @@
         android:layout_height="wrap_content"
         android:minWidth="200dp"
         android:text="@string/pair_to_new_device" />
+    <Button
+        android:id="@+id/controllerBtn"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="200dp"
+        android:text="@string/controller2" />
 
 
 
@@ -71,7 +78,7 @@
         <ListView
             android:id="@+id/devicesList"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
 

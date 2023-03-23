@@ -17,4 +17,5 @@
     <string name="_4_directions">4 Directions</string>
     <string name="_8_directions">8 Directions</string>
     <string name="speed_controller">Speed controller</string>
+    <string name="controller2">Controller</string>
 </resources>

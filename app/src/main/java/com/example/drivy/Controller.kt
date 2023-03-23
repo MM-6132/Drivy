@@ -6,6 +6,7 @@ import android.content.Intent
 import android.hardware.Camera
 import android.os.Bundle
 import android.util.Log
+import android.view.Surface
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.widget.*
@@ -145,8 +146,6 @@ class Controller : AppCompatActivity() {
                 b.bOutputStream.write(cmd.toByteArray())
             }catch (e:Exception){
                 b.reconnect(b.connectedDevice!!)
-                //b.connectedDevice = null
-                //findViewById<TextView>(R.id.deviceName).text = "No connection"
             }
         }
     }
@@ -156,7 +155,27 @@ class Controller : AppCompatActivity() {
 
         override fun surfaceCreated(holder: SurfaceHolder) {
             camera = Camera.open()
+            val info = Camera.CameraInfo()
+            Camera.getCameraInfo(info.facing, info)
+            val rotation = windowManager.defaultDisplay.rotation
+            var degrees = 0
 
+            when (rotation) {
+                Surface.ROTATION_0 -> degrees = 0
+                Surface.ROTATION_90 -> degrees = 90
+                Surface.ROTATION_180 -> degrees = 180
+                Surface.ROTATION_270 -> degrees = 270
+            }
+
+            var result: Int
+            if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                result = (info.orientation + degrees) % 360
+                result = (360 - result) % 360
+            } else {
+                result = (info.orientation - degrees + 360) % 360
+            }
+
+            camera.setDisplayOrientation(result)
             try {
                 camera.setPreviewDisplay(surfaceHolder)
                 camera.startPreview()
